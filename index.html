@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>单词分类器</title>
+    
+    <!-- PWA 配置 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <meta name="description" content="记录和管理每日学习的单词,用日历可视化你的学习进度">
+    
+    <!-- iOS PWA 支持 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="单词日历">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>📚 单词分类与管理</h1>
+
+        <!-- PWA 安装提示 -->
+        <div id="installPrompt" class="install-prompt" style="display: none;">
+            <p>📱 将应用添加到主屏幕,随时随地学习单词!</p>
+            <button id="installBtn">立即安装</button>
+            <button id="dismissBtn">稍后</button>
+        </div>
 
         <div class="input-area">
             <input 
@@ -20,16 +39,121 @@
             <button onclick="addWord()">添加单词</button>
         </div>
 
-        <div class="nav-buttons">
-            <button onclick="goToCalendarPage()">查看日历分类 🗓️</button>
-            <button onclick="goToAllWordsPage()">查看所有单词 📖</button>
-        </div>
+        <button class="view-calendar-btn" onclick="goToCalendarPage()">查看日历分类</button>
 
         <h2>所有单词列表 (按添加顺序)</h2>
-        <div id="results">
-        </div>
+        <div id="results"></div>
     </div>
 
     <script src="script.js"></script>
+    
+    <!-- PWA 安装和更新逻辑 -->
+    <script>
+        // ==========================================
+        // 1. 注册 Service Worker
+        // ==========================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => {
+                        console.log('✅ Service Worker 注册成功');
+                        
+                        // 检查更新
+                        reg.addEventListener('updatefound', () => {
+                            const newWorker = reg.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 发现新版本
+                                    if (confirm('🎉 发现新版本！点击确定立即更新')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(err => console.log('❌ Service Worker 注册失败:', err));
+            });
+            
+            // 监听 Service Worker 控制器变化
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    window.location.reload();
+                    refreshing = true;
+                }
+            });
+        }
+
+        // ==========================================
+        // 2. PWA 安装提示逻辑
+        // ==========================================
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 检查是否已经拒绝过（24小时内不再显示）
+            const lastDismissed = localStorage.getItem('installPromptDismissed');
+            const now = Date.now();
+            if (lastDismissed && (now - parseInt(lastDismissed)) < 24 * 60 * 60 * 1000) {
+                return; // 24小时内不显示
+            }
+            
+            // 显示自定义安装提示
+            installPrompt.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            console.log(`用户选择: ${outcome}`);
+            
+            if (outcome === 'accepted') {
+                console.log('✅ 用户接受安装');
+            } else {
+                console.log('❌ 用户拒绝安装');
+            }
+            
+            deferredPrompt = null;
+            installPrompt.style.display = 'none';
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            installPrompt.style.display = 'none';
+            // 记录拒绝时间
+            localStorage.setItem('installPromptDismissed', Date.now().toString());
+        });
+
+        // 监听安装成功事件
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ 应用已成功安装到主屏幕!');
+            installPrompt.style.display = 'none';
+            
+            // 可以显示欢迎提示
+            setTimeout(() => {
+                alert('🎉 安装成功！现在可以像使用原生应用一样使用单词日历了！');
+            }, 1000);
+        });
+
+        // ==========================================
+        // 3. 离线状态提示
+        // ==========================================
+        window.addEventListener('online', () => {
+            console.log('🌐 网络已连接');
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('📡 当前处于离线模式');
+            // 可以显示离线提示（可选）
+        });
+    </script>
 </body>
 </html>
