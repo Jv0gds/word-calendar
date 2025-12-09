@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词日历</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <h1>🗓️ 单词日历</h1>
+        <div class="calendar-header">
+            <button onclick="changeMonth(-1)">上月</button>
+            <h2 id="currentMonthYear"></h2>
+            <button onclick="changeMonth(1)">下月</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+            </div>
+
+        <div class="word-details" id="wordDetails">
+            </div>
+
+        <button class="view-calendar-btn" onclick="goToHomePage()">返回主页</button>
+
+    </div>
+
+    <script src="calendar.js"></script>
+</body>
+</html>

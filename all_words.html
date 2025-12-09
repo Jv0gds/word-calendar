@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>所有单词 A-Z</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="fixed-sidebar">
+        <h3>🏆 单词排行榜</h3>
+        <ul id="rankingList" class="ranking-list">
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h1>📖 所有单词 (A-Z)</h1>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">总单词数</span>
+                <span class="stat-value" id="totalWords">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">唯一单词</span>
+                <span class="stat-value" id="uniqueWords">0</span>
+            </div>
+        </div>
+        
+        <div id="allWordsArea">
+        </div>
+
+        <div class="fixed-controls">
+            <button onclick="goToCalendarPage()">查看日历 🗓️</button>
+            <button onclick="goToHomePage()">返回主页 🏠</button>
+        </div>
+    </div>
+
+    <script src="all_words.js"></script>
+</body>
+</html>

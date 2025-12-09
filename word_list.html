@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词详情</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="fixed-sidebar">
+        <h3>🏆 单词排行榜</h3>
+        <ul id="rankingList" class="ranking-list">
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h1 id="listHeader"></h1>
+        
+        <div id="wordDetailsArea">
+        </div>
+
+        <div class="fixed-controls">
+            <button onclick="triggerDeletion()" class="delete-fixed-btn">删除选中 🗑️</button>
+            <button onclick="goToAllWordsPage()">所有单词 📖</button>
+            <button onclick="goToCalendarPage()">返回日历 🗓️</button>
+            <button onclick="goToHomePage()">返回主页 🏠</button>
+        </div>
+    </div>
+
+    <script src="word_list.js"></script>
+
+    <div id="customConfirmModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="confirm-btn">确定</button>
+                <button id="modalCancelBtn" class="cancel-btn">取消</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

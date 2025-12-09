@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词分类器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📚 单词分类与管理</h1>
+
+        <div class="input-area">
+            <input 
+                type="text" 
+                id="wordInput" 
+                placeholder="输入单词"
+                onkeyup="handleEnter(event)"
+            >
+            <button onclick="addWord()">添加单词</button>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="goToCalendarPage()">查看日历分类 🗓️</button>
+            <button onclick="goToAllWordsPage()">查看所有单词 📖</button>
+        </div>
+
+        <h2>所有单词列表 (按添加顺序)</h2>
+        <div id="results">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
