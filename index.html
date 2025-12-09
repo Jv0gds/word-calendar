@@ -39,13 +39,28 @@
             <button onclick="addWord()">添加单词</button>
         </div>
 
-        <button class="view-calendar-btn" onclick="goToCalendarPage()">查看日历分类</button>
+        <!-- 导航按钮组 -->
+        <div class="nav-buttons">
+            <button onclick="goToCalendarPage()">查看日历 🗓️</button>
+            <button onclick="goToAllWordsPage()">所有单词 📖</button>
+        </div>
 
         <h2>所有单词列表 (按添加顺序)</h2>
         <div id="results"></div>
     </div>
 
     <script src="script.js"></script>
+    
+    <!-- 防止缓存问题 -->
+    <script>
+        // 检测是否是通过后退按钮返回的
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // 页面从缓存中恢复，强制刷新
+                window.location.reload();
+            }
+        });
+    </script>
     
     <!-- PWA 安装和更新逻辑 -->
     <script>
@@ -152,7 +167,6 @@
 
         window.addEventListener('offline', () => {
             console.log('📡 当前处于离线模式');
-            // 可以显示离线提示（可选）
         });
     </script>
 </body>

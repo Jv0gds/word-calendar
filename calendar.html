@@ -15,15 +15,24 @@
             <button onclick="changeMonth(1)">下月</button>
         </div>
         <div class="calendar-grid" id="calendarGrid">
-            </div>
+        </div>
 
         <div class="word-details" id="wordDetails">
-            </div>
+        </div>
 
-        <button class="view-calendar-btn" onclick="goToHomePage()">返回主页</button>
-
+        <div class="nav-buttons">
+            <button onclick="goToHomePage()">返回主页 🏠</button>
+            <button onclick="goToAllWordsPage()">所有单词 📖</button>
+        </div>
     </div>
 
     <script src="calendar.js"></script>
+    
+    <script>
+        // 添加返回主页的函数
+        function goToAllWordsPage() {
+            window.location.href = 'all_words.html';
+        }
+    </script>
 </body>
 </html>
